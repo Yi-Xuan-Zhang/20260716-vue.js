@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue簡易計算機</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h2>計算機</h2>
+        <label></label>
+         <button type="button" @click"+">+</button>
+    <button type="button" @click"-">-</button>
+    <button type="button" @click"*">*</button>
+    <button type="button" @click"/">/</button>
+    <div>結果:</div>
+    </div>
+   
+
+    <script>
+        const {createApp, ref } = Vue 
+
+        createApp({
+            setup() {
+        const num1 = ref(10)
+        const num2 = ref(5)
+        const result = ref(15)
+        const 
+      }
+    })
+    </script>
+</body>
+</html>

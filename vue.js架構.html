@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue基礎架構</title>
+</head>
+<body>
+  <!--  原生 JS -->
+  <!-- <div>
+    <button type="button">按下去後加數字1</button>
+    <output>1</output>
+  </div>
+  <hr>
+
+  <script>
+    const btn = document.querySelector('button');
+    const output = document.querySelector('output');
+    btn.addEventListener('click', function () {
+      output.textContent = 2
+    });
+  </script> -->
+
+
+  <!-- 引入 VUE CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <!-- VUE 生效的地方 -->
+  <!-- 使用 {{  }} 讓變數直接出現在 dom 元素裡面 -->
+  <div id="app">
+    {{ message }}
+    <div>姓名: {{ name }}</div>
+    <div>座號: {{ number }}</div>
+    <div>興趣: {{ interest }}</div>
+    <hr>
+<!-- 使用v-on 綁定事件 -->
+ <!-- v-on可審略，使用 @ -->
+  <!-- v-on後方接的是事件以及要執行的事情 -->
+<button type="button" @click="num++">
+    按下去數字增加
+</button>
+<output>{{ num }}</output>
+<button type="button" @click="minusNum">
+    按下去數字減少
+</button>
+  </div>
+
+
+  <script>
+    // 初始化 VUE
+    const { createApp, ref } = Vue
+
+    createApp({
+      setup() {
+        const message = ref('Hello vue!');
+        // 宣告三個變數，個別是姓名、座號、興趣
+        const name = ref('YiXuan');
+        const number = ref(3); 
+        const interest = ref('吃貝果');
+        const num = ref('1');
+
+        // 將變數丟出去給 dom 使用的地方
+        return {
+          message,
+          name,
+          number,
+          interest,
+          num,
+        }
+      }
+    }).mount('#app')
+  </script>
+</body>
+</html>
