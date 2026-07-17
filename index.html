@@ -44,8 +44,8 @@
     const errorMsg = ref('');
  
     function calculate(operator) {
-      errorMsg.value = '';
-      result.value = null;
+      errorMsg.value = '';  // 清空錯誤訊息
+      result.value = null; // 清空上一次的結果
  
       const a = parseFloat(num1.value);
       const b = parseFloat(num2.value);
@@ -54,12 +54,12 @@
         errorMsg.value = '請輸入有效的數字';
         return;
       }
- 
+ //寫法1
       let value;
       switch (operator) {
         case '+':
           value = a + b;
-          break;
+          break; //這個 case 處理完了，跳出 switch
         case '-':
           value = a - b;
           break;
@@ -74,7 +74,21 @@
           value = a / b;
           break;
       }
- 
+ //寫法2
+//  if (operator === '+') {
+//   value = a + b;
+// } else if (operator === '-') {
+//   value = a - b;
+// } else if (operator === '*') {
+//   value = a * b;
+// } else if (operator === '/') {
+//   if (b === 0) {
+//     errorMsg.value = '除數不可為 0';
+//     return;
+//   }
+//   value = a / b;
+// }
+
       // 避免浮點數運算產生過長小數
       result.value = Math.round(value * 1000000) / 1000000;
     }
