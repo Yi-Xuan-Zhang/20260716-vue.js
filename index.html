@@ -5,31 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>vue簡易計算機</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div id="app">
+    <div id="calculator">
         <h2>計算機</h2>
-        <label></label>
-         <button type="button" @click"+">+</button>
-    <button type="button" @click"-">-</button>
-    <button type="button" @click"*">*</button>
-    <button type="button" @click"/">/</button>
-    <div>結果:</div>
+        <div class="input-group">
+             <label>數字1</label>
+        <input type="number" v-model="num1" placeholder="請輸入數字">
+        </div>
+       <div class="input-group">
+        <label>數字2</label>
+        <input type="number" v-model="num2" placeholder="請輸入數字">
+       </div>
+       <div class="buttons">
+        <!-- 呼叫函式並帶參數 -->
+        <button @click="calculate('+')">+</button>
+      <button @click="calculate('-')">-</button>
+      <button @click="calculate('*')">×</button>
+      <button @click="calculate('/')">÷</button>
+       </div> 
+    
+    <div v-if="errorMsg" class="error">{{ errorMsg }}</div>
+    <div v-else-if="result !== null" :class="['result', { negative: result < 0 }]">
+      結果：{{ result }}
+    </div>
     </div>
    
-
     <script>
         const {createApp, ref } = Vue 
 
         createApp({
             setup() {
-        const num1 = ref(10)
-        const num2 = ref(5)
-        const result = ref(15)
-        const 
+    const num1 = ref('');
+    const num2 = ref('');
+    const result = ref(null);
+    const errorMsg = ref('');
+ 
+    function calculate(operator) {
+      errorMsg.value = '';
+      result.value = null;
+ 
+      const a = parseFloat(num1.value);
+      const b = parseFloat(num2.value);
+ 
+      if (isNaN(a) || isNaN(b)) {
+        errorMsg.value = '請輸入有效的數字';
+        return;
       }
-    })
-    </script>
+ 
+      let value;
+      switch (operator) {
+        case '+':
+          value = a + b;
+          break;
+        case '-':
+          value = a - b;
+          break;
+        case '*':
+          value = a * b;
+          break;
+        case '/':
+          if (b === 0) {
+            errorMsg.value = '除數不可為 0';
+            return;
+          }
+          value = a / b;
+          break;
+      }
+ 
+      // 避免浮點數運算產生過長小數
+      result.value = Math.round(value * 1000000) / 1000000;
+    }
+ 
+    // 使用 return 將資料與方法暴露給 template 使用
+    return {
+      num1,
+      num2,
+      result,
+      errorMsg,
+      calculate
+    };
+  }
+}).mount('#calculator')
+</script>
 </body>
 </html>
