@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員小卡產生器</title>
+<link rel="stylesheet" href="style-2.css">
+</head>
+<body>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <div id="app">
+  <p class="eyebrow">Membership Studio</p>
+  <h1>會員小卡</h1>
+  <p class="sub">輸入資料,即時預覽專屬會員卡</p>
+
+  <div class="layout">
+    <!-- 表單區 -->
+    <div class="panel">
+      <h2>基本資料</h2>
+
+      <div class="field">
+        <label for="name">會員姓名<span class="required-mark">*</span></label>
+        <input id="name" type="text" v-model="form.name" placeholder="請輸入姓名..." maxlength="20">
+      </div>
+
+      <div class="field">
+        <label for="old">年齡</label>
+        <input id="old" type="number" v-model.number="form.age" placeholder="請輸入年齡" min="0" max="120">
+      </div>
+
+      <div class="field">
+        <label for="level">會員等級</label>
+        <select id="level" v-model="form.level">
+          <option value="standard">一般會員</option>
+          <option value="silver">銀卡會員</option>
+          <option value="gold">金卡會員</option>
+          <option value="diamond">鑽石會員</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>頭像圖片網址</label>
+        <input type="text" v-model="form.avatar" placeholder="貼上圖片網址 (https://...)">
+      </div>
+
+      <h2 style="margin-top:30px;">顯示設定</h2>
+
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">顯示詳細資料</div>
+          <div class="toggle-desc">開啟後在卡片下方顯示年齡、編號等資訊</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" v-model="form.showDetails">
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </label>
+      </div>
+
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">啟用 VIP 模式</div>
+          <div class="toggle-desc">頭像加上金色動態光環與 VIP 標章</div>
+        </div>
+        <label class="switch vip">
+          <input type="checkbox" v-model="form.vip">
+          <span class="track"></span>
+          <span class="thumb"></span>
+        </label>
+      </div>
+
+      <p class="hint">提示:輸入姓名後,右側才會產生會員卡預覽;未提供頭像圖片網址時,將顯示姓名首字作為預設頭像。</p>
+    </div>
+
+    <!-- 預覽區 -->
+    <div class="preview-wrap">
+      <div v-if="!hasName" class="empty-state">
+        <div class="glyph">◈</div>
+        請先輸入會員姓名<br>以產生會員小卡預覽
+      </div>
+
+      <div class="stage" v-else>
+        <div
+          class="card"
+          :class="[tierClass, { 'is-vip': form.vip }]"
+          @mousemove="onTilt"
+          @mouseleave="resetTilt"
+          :style="tiltStyle"
+        >
+          <div class="corner-deco" v-if="form.vip"></div>
+
+          <div class="card-top">
+            <span class="brandline">Aurora Member Club</span>
+            <span class="level-badge" :class="levelBadgeClass">{{ levelLabel }}</span>
+          </div>
+
+          <div class="card-mid">
+            <div class="avatar-ring" :class="{ vip: form.vip }">
+              <img v-if="form.avatar" :src="form.avatar" alt="會員頭像" referrerpolicy="no-referrer">
+              <div v-else class="avatar-fallback" :style="fallbackAvatarStyle">{{ initials }}</div>
+              <span class="vip-stamp" v-if="form.vip">VIP</span>
+            </div>
+            <div class="name-block">
+              <div class="name">{{ form.name }}</div>
+              <div class="memberno">No. {{ memberNo }}</div>
+            </div>
+          </div>
+
+          <div class="card-bottom">
+            <div class="details-grid" v-if="form.showDetails">
+              <div>
+                <div class="dt">年齡</div>
+                <div class="dd">{{ form.age ? form.age + ' 歲' : '未提供' }}</div>
+              </div>
+              <div>
+                <div class="dt">會員等級</div>
+                <div class="dd">{{ levelLabel }}</div>
+              </div>
+              <div>
+                <div class="dt">加入日期</div>
+                <div class="dd">{{ joinDate }}</div>
+              </div>
+              <div>
+                <div class="dt">會員狀態</div>
+                <div class="dd">{{ form.vip ? 'VIP 尊榮' : '一般有效' }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="card-footer-note">{{ form.vip ? '✦ 尊榮 VIP 卡面 · 滑動可傾斜檢視' : '滑動卡片可傾斜檢視' }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const { createApp, reactive, computed, ref } = Vue;
+
+createApp({
+  setup(){
+    const form = reactive({
+      name: '',
+      age: null,
+      level: 'standard',
+      avatar: '',
+      showDetails: true,
+      vip: false
+    });
+
+    const tilt = reactive({ x: 0, y: 0 });
+    const hasName = computed(() => form.name.trim().length > 0);
+    const levelMap = {
+      standard: { label: '一般會員', cls: '', badgeCls: '' },
+      silver:   { label: '銀卡會員', cls: 'tier-silver', badgeCls: 'silver' },
+      gold:     { label: '金卡會員', cls: 'tier-gold', badgeCls: 'gold' },
+      diamond:  { label: '鑽石會員', cls: 'tier-diamond', badgeCls: 'diamond' },
+    };
+
+    const levelLabel = computed(() => levelMap[form.level].label);
+    const tierClass = computed(() => levelMap[form.level].cls);
+    const levelBadgeClass = computed(() => levelMap[form.level].badgeCls);
+
+    const initials = computed(() => {
+      const n = form.name.trim();
+      return n ? n.slice(0, 1) : '?';
+    });
+
+    const fallbackAvatarStyle = computed(() => ({
+      width: '64px', height: '64px', borderRadius: '50%',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: '22px',
+      background: '#3A3F4C', color: '#F1ECE1',
+      border: '2px solid rgba(255,255,255,0.85)'
+    }));
+
+    // 依姓名+等級+年齡產生穩定的會員編號
+    const memberNo = computed(() => {
+      const src = `${form.name}-${form.level}-${form.age || 0}`;
+      let hash = 0;
+      for (let i = 0; i < src.length; i++){
+        hash = (hash * 31 + src.charCodeAt(i)) >>> 0;
+      }
+      const prefix = { standard:'A', silver:'S', gold:'G', diamond:'D' }[form.level];
+      const digits = String(hash % 1000000).padStart(6, '0');
+      return `${prefix}-${digits}`;
+    });
+
+    const joinDate = computed(() => {
+      const d = new Date();
+      return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
+    });
+
+    const onTilt = (e) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width - 0.5;
+      const py = (e.clientY - rect.top) / rect.height - 0.5;
+      tilt.x = py * -10;
+      tilt.y = px * 12;
+    };
+    const resetTilt = () => { tilt.x = 0; tilt.y = 0; };
+
+    const tiltStyle = computed(() => ({
+      transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`
+    }));
+
+    return {
+      form, hasName, levelLabel, tierClass, levelBadgeClass,
+      initials, fallbackAvatarStyle, memberNo, joinDate,
+      onTilt, resetTilt, tiltStyle
+    };
+  }
+}).mount('#app');
+</script>
+</body>
+</html>

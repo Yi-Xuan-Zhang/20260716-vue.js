@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue列表渲染-餐廳菜單</title>
+</head>
+<body>
+  <!-- 引入 VUE CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <!-- VUE 生效的地方 -->
+  <!-- 使用 {{  }} 讓變數直接出現在 DOM 元素裡面 -->
+  <div id="app">
+    
+    <ul>
+        <div>[麵食]</div>
+      <!-- v-for 寫在 DOM 元素上使用迴圈 -->
+      <!-- 一定要寫 :key ， key是放唯一值 -->
+      <li v-for="(item, index) in meals" :key="index">
+        {{ item }}
+      </li>
+      <div>[小菜]</div>
+      <li v-for="(item, index) in smfoods" :key="imdex">
+        {{ item }}
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    // 從 VUE 中取出 createApp 及 ref 來使用(按需引入)
+    const { createApp, ref } = Vue;
+    
+    // 初始化 VUE
+    createApp({
+      setup() {
+        // 這裡面寫 JS
+        const meals = ['紹辣乾麵', '皮蛋麵', '紅油抄手', '高麗菜水餃','肉燥飯'];
+        const smfoods = ['滷蛋', '小豆干', '豆包','海帶','米血','嘴邊肉'];
+        // 將變數/函式丟出去給 DOM 元素使用
+        return {
+          meals,
+          smfoods,
+        };
+      },
+    }).mount('#app');
+    // mount() 指的是將 VUE 掛在指定的 DOM 元素上
+  </script>
+</body>
+</html>

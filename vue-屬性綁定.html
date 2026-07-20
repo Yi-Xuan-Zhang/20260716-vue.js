@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue基礎語法-屬性綁定</title>
+
+  <style>
+    .box {
+      width: 200px;
+      height: 200px;
+      border: 2px solid #000;
+      border-radius: 8px;
+    }
+
+    .red {
+      background-color: red;
+    }
+
+    .blue {
+      background-color: blue;
+    }
+  </style>
+</head>
+<body>
+  <!-- 引入 VUE CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <div id="app">
+    <!-- v-bind 可以控制 DOM 上所有的"屬性"，讓該屬性可被 JS 控制 -->
+    <!-- v-bind 常縮寫為 : -->
+    <div class="box" :class="colorClass"></div>
+    <button type="button" @click="colorClass = 'blue'">
+      變成藍色
+    </button>
+    <button type="button" @click="colorClass = 'red'">
+      變成紅色
+    </button>
+  </div>
+  
+
+  <script>
+    // 從 VUE 中取出 createApp 及 ref 來使用(按需引入)
+    const { createApp, ref } = Vue;
+    
+    // 初始化 VUE
+    createApp({
+      setup() {
+        const colorClass = ref('');
+
+        // 將變數/函式丟出去給 DOM 元素使用
+        return {
+          colorClass,
+        };
+      },
+    }).mount('#app');
+    // mount() 指的是將 VUE 掛在指定的 DOM 元素上
+  </script>
+</body>
+</html>

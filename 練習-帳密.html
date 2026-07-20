@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue基礎語法-練習v-bind/v-model</title>
+</head>
+<body>
+  <!-- 引入 VUE CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <!-- VUE 生效的地方 -->
+  <!-- 使用 {{  }} 讓變數直接出現在 DOM 元素裡面 -->
+  <div id="app">
+    <label for="account">帳號</label>
+    <!-- v-model 將變數與輸入框雙向綁定，當輸入框變動時，變數也會跟著變動；反之亦然 -->
+    <input id="account" v-model="account" type="text">
+
+    <label for="password">密碼</label>
+    <input id="password" v-modle="password" :type='inputType'>
+     <button type="button" @click="switch">顯示/隱藏密碼</button>
+  </div>
+ 
+  <script>
+    // 從 VUE 中取出 createApp 及 ref 來使用(按需引入)
+    const { createApp, ref } = Vue;
+    
+    // 初始化 VUE
+    createApp({
+      setup() {
+        // 這裡面寫 JS
+        const account = ref('');
+        const password = ref('');
+
+        const putValueToAddress = (e) => {
+          // 在放進變數之前檢查、篩選、整理
+          address.value = e.target.value;
+        };
+
+        // 將變數/函式丟出去給 DOM 元素使用
+        return {
+          account,
+          password,
+          putValueToAddress
+        };
+      },
+    }).mount('#app');
+    // mount() 指的是將 VUE 掛在指定的 DOM 元素上
+  </script>
+</body>
+</html>

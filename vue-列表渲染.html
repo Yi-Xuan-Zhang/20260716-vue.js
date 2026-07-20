@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue基礎語法-列表渲染</title>
+</head>
+<body>
+  <!-- 引入 VUE CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <!-- VUE 生效的地方 -->
+  <!-- 使用 {{  }} 讓變數直接出現在 DOM 元素裡面 -->
+  <div id="app">
+    <ul>
+      <!-- v-for 寫在 DOM 元素上使用迴圈 -->
+      <!-- 一定要寫 :key ， key是放唯一值 -->
+      <li v-for="(item, index) in fruits" :key="index">
+        {{ item }}
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    // 從 VUE 中取出 createApp 及 ref 來使用(按需引入)
+    const { createApp, ref } = Vue;
+    
+    // 初始化 VUE
+    createApp({
+      setup() {
+        // 這裡面寫 JS
+        const fruits = ['香蕉', '鳳梨', '西瓜', '水蜜桃'];
+
+        // 將變數/函式丟出去給 DOM 元素使用
+        return {
+          fruits,
+        };
+      },
+    }).mount('#app');
+    // mount() 指的是將 VUE 掛在指定的 DOM 元素上
+  </script>
+</body>
+</html>

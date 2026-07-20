@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue基礎語法-雙向綁定</title>
+</head>
+<body>
+  <!-- 引入 VUE CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <!-- VUE 生效的地方 -->
+  <!-- 使用 {{  }} 讓變數直接出現在 DOM 元素裡面 -->
+  <div id="app">
+    <label for="name">姓名</label>
+    <!-- v-model 將變數與輸入框雙向綁定，當輸入框變動時，變數也會跟著變動；反之亦然 -->
+    <input id="name" v-model="name" type="text">
+    {{ name }}
+
+    <!-- 不使用 v-model -->
+    <label for="address">地址</label>
+    <!-- v-model 將變數與輸入框雙向綁定，當輸入框變動時，變數也會跟著變動；反之亦然 -->
+    <input id="address" type="text" @input="(e) => putValueToAddress(e)">
+    {{ address }}
+  </div>
+
+  <script>
+    // 從 VUE 中取出 createApp 及 ref 來使用(按需引入)
+    const { createApp, ref } = Vue;
+    
+    // 初始化 VUE
+    createApp({
+      setup() {
+        // 這裡面寫 JS
+        const name = ref('');
+        const address = ref('');
+
+        const putValueToAddress = (e) => {
+          // 在放進變數之前檢查、篩選、整理
+          address.value = e.target.value;
+        };
+
+        // 將變數/函式丟出去給 DOM 元素使用
+        return {
+          name,
+          address,
+          putValueToAddress,
+        };
+      },
+    }).mount('#app');
+    // mount() 指的是將 VUE 掛在指定的 DOM 元素上
+  </script>
+</body>
+</html>
