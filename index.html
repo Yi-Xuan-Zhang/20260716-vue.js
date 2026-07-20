@@ -10,15 +10,16 @@
 
 <body>
     <div id="calculator">
-        <h2>計算機</h2>
+        <h1>計算機</h1>
         <div class="input-group">
-             <label>數字1</label>
-        <input type="number" v-model="num1" placeholder="請輸入數字">
+             <label for="num1">數字1</label>
+             <input id="num1" type="number" v-model="num1" placeholder="請輸入數字">
         </div>
        <div class="input-group">
-        <label>數字2</label>
-        <input type="number" v-model="num2" placeholder="請輸入數字">
+        <label for="num2">數字2</label>
+        <input id="num2" type="number" v-model="num2" placeholder="請輸入數字">
        </div>
+       <!-- v-model 自動處理「綁定資料（v-bind）」與「監聽輸入事件（v-on）」 -->
        <div class="buttons">
         <!-- 呼叫函式並帶參數 -->
         <button @click="calculate('+')">+</button>
@@ -31,6 +32,7 @@
     <div v-else-if="result !== null" :class="['result', { negative: result < 0 }]">
       結果：{{ result }}
     </div>
+    <!-- 優先展示錯誤訊息，若無錯誤且有計算結果時，顯示結果並根據數值正負動態切換樣式。 -->
     </div>
    
     <script>
