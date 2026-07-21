@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue進階語法-計算屬性</title>
+</head>
+<body>
+  <!-- 引入 VUE CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <div id="app">
+    <label for="num">
+      <input id="num" v-model="num" type="number">
+    </label>
+    <div>變數 num 值是 {{ num }}</div>
+    <div>變數 num 值的2倍是 {{ newNum }}</div>
+  </div>
+  
+
+  <script>
+    // 從 VUE 中取出 createApp 、 computed 及 ref 來使用(按需引入)
+    const { createApp, ref, computed } = Vue;
+    
+    // 初始化 VUE
+    createApp({
+      setup() {
+        const num = ref(2);
+        // computed 會監聽指定變數後，當改變時產生新的值
+        // 一定要寫 return
+        // 像是一個自動監聽的"變數"
+        const newNum = computed(() => {
+          return num.value * 2;
+        });
+
+        // 將變數/函式丟出去給 DOM 元素使用
+        return {
+          num,
+          newNum,
+        };
+      },
+    }).mount('#app');
+    // mount() 指的是將 VUE 掛在指定的 DOM 元素上
+  </script>
+</body>
+</html>

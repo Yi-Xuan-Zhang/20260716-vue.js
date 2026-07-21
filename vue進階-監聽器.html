@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue進階語法-監聽器</title>
+</head>
+<body>
+  <!-- 引入 VUE CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <div id="app">
+    <label for="num">
+      <input id="num" v-model="num" type="number">
+    </label>
+    <div>變數 num 值是 {{ num }}</div>
+  </div>
+  
+
+  <script>
+    // 從 VUE 中取出 createApp 、 watch 及 ref 來使用(按需引入)
+    const { createApp, ref, watch } = Vue;
+    
+    // 初始化 VUE
+    createApp({
+      setup() {
+        const num = ref(2);
+
+        // watch 可以監聽某個變數後執行一件或多件事情
+        // 第一個參數放的是要監聽的變數
+        // 第二個參數放的是要做的事情(函式)
+        // 函式內可以帶2個"選填參數"，1個是舊的值，1個是新的值
+        watch(num, (newValue, oldValue) => {
+          // 副作用
+          console.log('數值有變喔~');
+          console.log('新的值是', newValue);
+          console.log('舊的值是', oldValue);
+        });
+
+        // 將變數/函式丟出去給 DOM 元素使用
+        return {
+          num,
+        };
+      },
+    }).mount('#app');
+    // mount() 指的是將 VUE 掛在指定的 DOM 元素上
+  </script>
+</body>
+</html>

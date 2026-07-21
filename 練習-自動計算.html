@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue 3 字數計算</title>
+</head>
+<body>
+     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+     
+     <div id="app">
+        <label for="use-input"></label>
+        <input id="use-input" v-model="text" type="text" placeholder="請輸入文字" >
+
+    <!-- 使用 v-model 將文字輸入框雙向綁定到 text 變數
+    <textarea 
+      id="user-input" 
+      v-model="text" 
+      placeholder="請在此打字..."
+    ></textarea> -->
+
+    <!-- 在下方渲染 computed 計算出的字數結果 -->
+    <div class="result" :class="{ warning: charCount > 100 }">
+      目前字數：{{ charCount }} 字
+    </div>
+    </div>
+    <script>
+        const {createApp, ref, computed } = Vue;
+        
+        createApp({
+            setup(){
+                // 1. 建立綁定輸入框的響應式變數
+                const text = ref('');
+                // 2. 使用 computed 自動計算字數
+                const charCount = computed(() => {
+                     return text.value.length;
+                    });
+                
+                //將變數回傳使用
+                return{
+                    text,
+                    charCount,
+                };
+            }
+        }).mount('#app');
+        //mount() 指的是將 VUE 掛在指定的 DOM 元素上
+        </script>
+</body>
+</html>

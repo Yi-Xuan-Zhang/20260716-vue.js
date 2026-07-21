@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,6 +52,7 @@
         </div>
         <label for="switch" class="switch">
           <input id="switch" type="checkbox" v-model="form.showDetails">
+          <!-- checkbox 用 v-model 綁定會自動對應到 true/false -->
           <span class="track"></span>
           <span class="thumb"></span>
         </label>
@@ -83,6 +84,7 @@
         <div
           class="card"
           :class="[tierClass, { 'is-vip': form.vip }]"
+
           @mousemove="onTilt"
           @mouseleave="resetTilt"
           :style="tiltStyle"
@@ -122,7 +124,8 @@
               </div>
               <div>
                 <div class="dt">會員狀態</div>
-                <div class="dd">{{ form.vip ? 'VIP 尊榮' : '一般有效' }}</div>
+                <div class="dd">{{ form.vip ? 'VIP 尊榮' : '一般有效' }}</div> 
+                <!-- 三元運算(產生一個結果-賦予值)--條件 ? 條件為真時的值 : 條件為假時的值-->
               </div>
             </div>
           </div>
@@ -138,17 +141,14 @@ const { createApp, reactive, computed, ref } = Vue;
 
 createApp({
   setup(){
-    const form = reactive({
-      name: '',
-      age: null,
-      level: 'standard',
-      avatar: '',
-      showDetails: true,
-      vip: false
+    // 用 ref 包住整個物件
+    const form = ref({
+      name: '', age: null, level: 'standard',
+      avatar: '', showDetails: true, vip: false
     });
 
-    const tilt = reactive({ x: 0, y: 0 });
-    const hasName = computed(() => form.name.trim().length > 0);
+    const tilt = ref({ x: 0, y: 0 });
+    const hasName = computed(() => form.name.trim().length > 0);//computed計算屬性
     const levelMap = {
       standard: { label: '一般會員', cls: '', badgeCls: '' },
       silver:   { label: '銀卡會員', cls: 'tier-silver', badgeCls: 'silver' },

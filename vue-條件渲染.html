@@ -31,8 +31,16 @@
       顯示/隱藏
     </button>
     <!-- 用 v-if / v-else 來條件渲染 -->
+    <!-- DOM 會消失，通常用在不想讓人看到隱藏DOM的時候 -->
+    <!-- 效能損耗相對較大，使用者較少操作導致變化的情況下使用 -->
     <div v-if="isShow" class="box red"></div>
     <div v-else class="box blue"></div>
+
+    <!-- 用 v-show 來條件渲染 -->
+    <!-- 僅在 DOM 上加入 display: none，打開F12還是看得到 -->
+    <!-- 效能損耗相對較小，使用者較常操作導致變化的情況下使用 -->
+    <div v-show="isShow" class="box red"></div>
+    <div v-show="!isShow" class="box blue"></div>
   </div>
   
 
