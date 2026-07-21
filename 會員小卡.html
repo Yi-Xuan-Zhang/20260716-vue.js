@@ -50,8 +50,8 @@
           <div class="toggle-label">顯示詳細資料</div>
           <div class="toggle-desc">開啟後在卡片下方顯示年齡、編號等資訊</div>
         </div>
-        <label class="switch">
-          <input type="checkbox" v-model="form.showDetails">
+        <label for="switch" class="switch">
+          <input id="switch" type="checkbox" v-model="form.showDetails">
           <span class="track"></span>
           <span class="thumb"></span>
         </label>
@@ -62,8 +62,8 @@
           <div class="toggle-label">啟用 VIP 模式</div>
           <div class="toggle-desc">頭像加上金色動態光環與 VIP 標章</div>
         </div>
-        <label class="switch vip">
-          <input type="checkbox" v-model="form.vip">
+        <label for="switch-vip" class="switch vip">
+          <input id="switch-vip" type="checkbox" v-model="form.vip">
           <span class="track"></span>
           <span class="thumb"></span>
         </label>
