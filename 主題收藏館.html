@@ -8,14 +8,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700;900&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
 <!-- Vue -->
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-
 <!-- TopoJSON -->
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
-
 <!-- D3 Geo -->
 <script src="https://cdn.jsdelivr.net/npm/d3-geo@3"></script>
 <style>
@@ -311,7 +307,7 @@ const SEED_ITEMS = [
     imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvqqFG0X0pe_7pxp_uhBgqVysdr_T5mUDM3Z7SeDHe1g&s',
     mapUrl: 'https://maps.app.goo.gl/vPAiC4jNNVGttjcE8',
     description: '臺北大安熱門酸種麵包店，歌手田馥甄也很喜歡。先後在天母及新竹竹北展店。' },
-  { id: 3, name: 'Bagel Expresso 貝果咖啡', type: '貝果', region: '台中市', rating: 4,
+  { id: 3, name: 'Bagel Expresso 貝果咖啡', type: '貝果', region: '臺中市', rating: 4,
     imageUrl: 'https://placehold.co/600x450/C79A45/4A3B2A?text=%E8%B2%9D%E6%9E%9C', 
     mapUrl: 'https://maps.app.goo.gl/TG2wK84C5S7bYVdr9', 
     description: '' },
@@ -335,24 +331,12 @@ const app = Vue.createApp({
     },
 
     mapReady: false,
-
     items: SEED_ITEMS,
-
-    typeOptions: [
-      '歐包',
-      '貝果',
-      '酸種',
-      '饅頭',
-      '鹼水',
-      '司康'
-    ],
-
+    typeOptions: ['歐包', '貝果', '酸種', '饅頭', '鹼水', '司康'],
     countyOrder: COUNTY_ORDER,
-
     selectedType: '全部',
     selectedRegion: null,
     hoveredCounty: null,
-
     expanded: {},
     showModal: false,
     formError: '',
